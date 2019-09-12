@@ -3,8 +3,11 @@ import os
 import csv
 import numpy as np
 
-# Set path for file
+# Set path for csv
 csvpath = '/Users/macsherwin/Documents/SMU/homework/Unit_03_Python/PyBank/budget_data.csv'
+
+# Set path for output txt file
+file = open('/Users/macsherwin/Documents/SMU/homework/Unit_03_Python/PyBank/budget.txt', 'w+')
 
 # Lists to store data
 Profit_losses = []
@@ -24,6 +27,7 @@ with open(csvpath, newline="") as csvfile:
         # Add Profit/Losses
         Profit_losses.append(int(row[1]))
     
+    # CReate a new List of Adjusted values per index
     Adjusted_Profit_Losses = Profit_losses.copy()
     Adjusted_Profit_Losses.pop(0)
     Adjusted_Profit_Losses.append(0)
@@ -46,7 +50,9 @@ with open(csvpath, newline="") as csvfile:
 
 # The average of the changes in "Profit/Losses" over the entire period
 
+    # Creating a list from a nparray 
     Difference = list(np.subtract(Adjusted_Profit_Losses,Profit_losses))
+    # deleting the last entry since no comparison
     Difference.pop()
 
     Average_Change = (sum(Difference)/85)
@@ -70,3 +76,14 @@ with open(csvpath, newline="") as csvfile:
 
     print(f"Greatest Decrease in Profits: {G_Dec_Date} (${Greatest_Decrease})")
 
+
+    # writes to txt file
+    file.write("Financial Analysis\n")
+    file.write("----------------------------\n")
+    file.write(f"Total Months: {total_num_mos}\n")
+    file.write(f"Total: ${total_amount}\n")
+    file.write(f"Average  Change: ${Average_Change}\n")
+    file.write(f"Greatest Increase in Profits: {G_Inc_Date} (${Greatest_Increase})\n")
+    file.write(f"Greatest Decrease in Profits: {G_Dec_Date} (${Greatest_Decrease})\n")
+
+file.close()
